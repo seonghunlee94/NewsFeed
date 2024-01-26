@@ -7,22 +7,22 @@
 - lsb_release -a : Ubuntu 버전 확인
 
 #### docker engine gpg 키 등록
-sudo apt-get update
-sudo apt-get install ca-certificates curl gnupg
-sudo install -m 0755 -d /etc/apt/keyrings
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-sudo chmod a+r /etc/apt/keyrings/docker.gpg
+- sudo apt-get update
+- sudo apt-get install ca-certificates curl gnupg
+- sudo install -m 0755 -d /etc/apt/keyrings
+- curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+- sudo chmod a+r /etc/apt/keyrings/docker.gpg
 
 #### apt source 에 docker 관련 추가
-echo \
+- echo \
   "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
   "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-sudo apt-get update
+- sudo apt-get update
 
 #### docker engine 설치
-sudo apt-get install -y docker-ce docker-ce-cli containerd.io \
-docker-buildx-plugin docker-compose-plugin docker-compose
+- sudo apt-get install -y docker-ce docker-ce-cli containerd.io \
+- docker-buildx-plugin docker-compose-plugin docker-compose
 
 
 ### docker-container connect
