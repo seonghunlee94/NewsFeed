@@ -5,6 +5,7 @@ import org.example.prepurchase.domain.user.dao.UserRepository;
 import org.example.prepurchase.domain.user.dto.UserRequestDto;
 import org.example.prepurchase.global.error.DuplicateEmailException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,10 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -27,11 +30,14 @@ public class UserService {
             throw new DuplicateEmailException("Duplicate email address");
         }
 
+        // 패스워드 암호화
+        String encodedPassword = passwordEncoder.encode(newUserDto.getPassword());
+
         // 회원가입
         Users newUser = new Users(
                 newUserDto.getName(),
                 newUserDto.getEmail(),
-                newUserDto.getPassword(),
+                encodedPassword,
                 newUserDto.getGreeting(),
                 newUserDto.getProfileImage()
         );
