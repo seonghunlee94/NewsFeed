@@ -1,6 +1,7 @@
 package org.example.prepurchase.domain.user.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,19 +14,20 @@ public class Users {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 100)
-    private String name;
+    @NotNull
+    @Column(nullable = false, unique = true)
+    private String username;
 
-    @Column
+    @Column(nullable = false, unique = true)
     private String email;
 
-    @Column
+    @Column(nullable = false)
     private String password;
 
-    @Column
+    @Column(nullable = false)
     private String greeting;
 
-    @Column
+    @Column(nullable = false)
     private String profileImage;
 
 
@@ -35,8 +37,8 @@ public class Users {
     }
 
     // 생성자
-    public Users(String name, String email, String password, String greeting, String profileImage) {
-        this.name = name;
+    public Users(String username, String email, String password, String greeting, String profileImage) {
+        this.username = username;
         this.email = email;
         this.password = password;
         this.greeting = greeting;
@@ -52,12 +54,12 @@ public class Users {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {

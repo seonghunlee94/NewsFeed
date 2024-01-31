@@ -4,7 +4,8 @@ import jakarta.validation.Valid;
 import org.example.prepurchase.domain.user.application.UserService;
 import org.example.prepurchase.domain.user.domain.Users;
 import org.example.prepurchase.domain.user.dto.UserRequestDto;
-import org.example.prepurchase.global.error.DuplicateEmailException;
+import org.example.prepurchase.domain.user.exception.DuplicateEmailException;
+import org.example.prepurchase.domain.user.exception.DuplicateUsernameException;
 import org.example.prepurchase.global.error.ErrorDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,9 @@ public class UserController {
             signedUpUser.setPassword(null);
             return ResponseEntity.ok("회원가입되었습니다.");
         } catch (DuplicateEmailException e) {
+            ErrorDto errorDto = new ErrorDto(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(errorDto.getMessage());
+        } catch (DuplicateUsernameException e) {
             ErrorDto errorDto = new ErrorDto(e.getMessage());
             return ResponseEntity.status(HttpStatus.CONFLICT).body(errorDto.getMessage());
         }
