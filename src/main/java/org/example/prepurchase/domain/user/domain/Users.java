@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.example.prepurchase.global.auth.UserRoleEnum;
 
 @Entity
 @Getter
@@ -30,6 +31,10 @@ public class Users {
     @Column(nullable = false)
     private String profileImage;
 
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private UserRoleEnum role;
+
 
     // 기본 생성자
     public Users() {
@@ -37,12 +42,13 @@ public class Users {
     }
 
     // 생성자
-    public Users(String username, String email, String password, String greeting, String profileImage) {
+    public Users(String username, String email, String password, String greeting, String profileImage, UserRoleEnum role) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.greeting = greeting;
         this.profileImage = profileImage;
+        this.role = role;
     }
 
     // Getter, Setter 메서드
@@ -94,5 +100,12 @@ public class Users {
         this.profileImage = profileImage;
     }
 
+    public UserRoleEnum getRole() {
+        return role;
+    }
+
+    public void setRole(UserRoleEnum role) {
+        this.role = role;
+    }
 
 }

@@ -31,6 +31,8 @@ public class UserRequestDto {
     @NotBlank(message = "프로필 이미지는 필수 입력 값입니다.")
     private String profileImage;
 
+    private String adminToken = "";
+
     public String getPassword() {
         return password;
     }
