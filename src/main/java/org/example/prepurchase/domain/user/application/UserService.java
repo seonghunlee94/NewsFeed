@@ -4,9 +4,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.example.prepurchase.domain.user.domain.Users;
 import org.example.prepurchase.domain.user.dao.UserRepository;
 import org.example.prepurchase.domain.user.dto.LoginRequestDto;
-import org.example.prepurchase.domain.user.dto.UserRequestDto;
-import org.example.prepurchase.domain.user.exception.DuplicateEmailException;
-import org.example.prepurchase.domain.user.exception.DuplicateUsernameException;
+import org.example.prepurchase.domain.user.dto.SignupRequestDto;
+import org.example.prepurchase.domain.user.exception.DuplicateException;
 import org.example.prepurchase.global.auth.UserRoleEnum;
 import org.example.prepurchase.global.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,16 +30,16 @@ public class UserService {
 
 
     @Transactional
-    public Users signUpUser(UserRequestDto newUserDto) {
+    public Users signUpUser(SignupRequestDto newUserDto) {
         // 이메일 중복 체크
         Users existingEmail = userRepository.findByEmail(newUserDto.getEmail());
         if (existingEmail != null) {
-            throw new DuplicateEmailException("Duplicate email address");
+            throw new DuplicateException("Duplicate email address");
         }
 
         Users existingUser = userRepository.findByUsername(newUserDto.getUsername());
         if (existingUser != null) {
-            throw new DuplicateUsernameException("Duplicate username");
+            throw new DuplicateException("Duplicate username");
         }
 
         // 패스워드 암호화
