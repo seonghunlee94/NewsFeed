@@ -2,7 +2,6 @@ package org.example.prepurchase.domain.user.api;
 
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.prepurchase.domain.user.application.UserService;
 import org.example.prepurchase.global.auth.UserRoleEnum;
 import org.example.prepurchase.global.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,22 +12,22 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api")
-public class JwtTest {
+public class JwtTestController {
 
     private final JwtUtil jwtUtil; // JwtUtil 주입을 위한 필드 추가
 
     @Autowired
-    public JwtTest(JwtUtil jwtUtil) {
+    public JwtTestController(JwtUtil jwtUtil) {
         this.jwtUtil = jwtUtil;
     }
 
     @GetMapping("/create-jwt")
     public String createJwt(HttpServletResponse res) {
         // Jwt 생성
-        String token = jwtUtil.createToken("JohnDoe11", UserRoleEnum.USER);
+        String token = jwtUtil.createAccessToekn("JohnDoe11", UserRoleEnum.USER);
 
         // Jwt 쿠키 저장
-        jwtUtil.addJwtToCookie(token, res);
+        jwtUtil.addJwtToCookie(token, res, "Authorization");
 
         return "createJwt : " + token;
     }
