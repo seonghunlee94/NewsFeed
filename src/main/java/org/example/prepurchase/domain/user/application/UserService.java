@@ -19,12 +19,14 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
+    private final RedisService redisService;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil, RedisService redisService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
+        this.redisService = redisService;
 
     }
 
@@ -74,8 +76,13 @@ public class UserService {
         }
 
         // JWT 생성 및 쿠키에 저장 후 Response 객체에 추가
-        String token = jwtUtil.createToken(user.getUsername(), user.getRole());
-        jwtUtil.addJwtToCookie(token, res);
+        String token = jwtUtil.createAccessToekn(user.getUsername(), user.getRole());
+        String refreshToken = jwtUtil.createRefreshToekn(user.getUsername(), user.getRole());
+        jwtUtil.addJwtToCookie(token, res, JwtUtil.AUTHORIZATION_HEADER);
+        jwtUtil.addJwtToCookie(refreshToken, res, JwtUtil.REFRESH_HEADER);
+
+        // redis에 데이터 넣기.
+        redisService.setValues(refreshToken, username);
     }
 
 
