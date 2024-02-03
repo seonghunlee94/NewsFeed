@@ -44,9 +44,7 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<String> loginUser(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse res) {
         try {
-            // 로그인 기능을 UserService에 위임
             userService.login(loginRequestDto, res);
-
             return ResponseEntity.ok("로그인 성공");
         } catch (IllegalArgumentException e) {
             ErrorDto errorDto = new ErrorDto(e.getMessage());
