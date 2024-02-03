@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class JwtTestController {
 
-    private final JwtUtil jwtUtil; // JwtUtil 주입을 위한 필드 추가
+    private final JwtUtil jwtUtil;
 
     @Autowired
     public JwtTestController(JwtUtil jwtUtil) {
@@ -28,7 +28,6 @@ public class JwtTestController {
 
         // Jwt 쿠키 저장
         jwtUtil.addJwtToCookie(token, res, "Authorization");
-
         return "createJwt : " + token;
     }
 
@@ -44,9 +43,11 @@ public class JwtTestController {
 
         // 토큰에서 사용자 정보 가져오기
         Claims info = jwtUtil.getUserInfoFromToken(token);
+
         // 사용자 username
         String username = info.getSubject();
         System.out.println("username = " + username);
+
         // 사용자 권한
         String authority = (String) info.get(JwtUtil.AUTHORIZATION_KEY);
         System.out.println("authority = " + authority);
