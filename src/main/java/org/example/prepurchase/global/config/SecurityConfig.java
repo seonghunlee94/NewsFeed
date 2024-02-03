@@ -28,11 +28,10 @@ public class SecurityConfig {
                                 .requestMatchers(
                                         "/users/signup",
                                         "/users/login",
-                                        "/api/create-jwt",
-                                        "/api/get-jwt"
+                                        "/api/create-jwt"
                                 )
                                 .permitAll()
-                                .anyRequest().authenticated()
+                                .anyRequest().permitAll()
                 )
 
                 // 세션을 사용하지 않기 때문에 STATELESS로 설정

@@ -1,7 +1,9 @@
 package org.example.prepurchase.domain.user.api;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import org.example.prepurchase.domain.user.application.RedisService;
 import org.example.prepurchase.domain.user.application.UserService;
 import org.example.prepurchase.domain.user.domain.Users;
 import org.example.prepurchase.domain.user.dto.LoginRequestDto;
@@ -18,10 +20,12 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+    private final RedisService redisService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, RedisService redisService) {
         this.userService = userService;
+        this.redisService = redisService;
     }
 
 
@@ -42,10 +46,18 @@ public class UserController {
         try {
             // 로그인 기능을 UserService에 위임
             userService.login(loginRequestDto, res);
+
             return ResponseEntity.ok("로그인 성공");
         } catch (IllegalArgumentException e) {
             ErrorDto errorDto = new ErrorDto(e.getMessage());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorDto.getMessage());
         }
     }
+
+    @GetMapping("/logout")
+    public ResponseEntity<String> logout(HttpServletRequest request) {
+        redisService.delValues(request.getHeader("username"));
+        return ResponseEntity.ok().body("로그아웃 성공!");
+    }
+
 }

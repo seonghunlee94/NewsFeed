@@ -24,10 +24,10 @@ public class JwtTestController {
     @GetMapping("/create-jwt")
     public String createJwt(HttpServletResponse res) {
         // Jwt 생성
-        String token = jwtUtil.createToken("JohnDoe11", UserRoleEnum.USER);
+        String token = jwtUtil.createAccessToekn("JohnDoe11", UserRoleEnum.USER);
 
         // Jwt 쿠키 저장
-        jwtUtil.addJwtToCookie(token, res);
+        jwtUtil.addJwtToCookie(token, res, "Authorization");
 
         return "createJwt : " + token;
     }
