@@ -1,5 +1,6 @@
 package org.example.prepurchase.domain.user.application;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.prepurchase.domain.user.domain.Users;
 import org.example.prepurchase.domain.user.dao.UserRepository;
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Objects;
 
 @Service
 public class UserService {
@@ -85,5 +88,31 @@ public class UserService {
         redisService.setValues(refreshToken, username);
     }
 
+    public void patchInformation(String username, SignupRequestDto updateUser) {
+        Users user = userRepository.findByUsername(username);
+
+        if (user == null) {
+            throw new IllegalArgumentException("없는 사용자입니다.");
+        }
+
+        // 변경이 없을 시. flag = False
+        Boolean flag = false;
+
+        if (!user.getGreeting().equals(updateUser.getGreeting())) {
+            user.setGreeting(updateUser.getGreeting());
+            flag = true;
+        }
+
+        if (!user.getProfileImage().equals(updateUser.getProfileImage())) {
+            user.setProfileImage(updateUser.getProfileImage());
+            flag = true;
+        }
+
+        if (!flag) {
+            throw new IllegalArgumentException("변경된 정보가 없습니다.");
+        }
+        userRepository.save(user);
+
+    }
 
 }

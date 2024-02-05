@@ -58,4 +58,22 @@ public class UserController {
         return ResponseEntity.ok().body("로그아웃 성공!");
     }
 
+    @PatchMapping("/information")
+    public ResponseEntity<String> patchInformation(HttpServletRequest request, @RequestBody SignupRequestDto updateUser) {
+        // username은 변경 불가. -> header로 받아오기. RequestBody에는 greeting과 image 넣어서 보내기.
+        String username = request.getHeader("username");
+        if (username != null) {
+            try {
+                userService.patchInformation(request.getHeader("username"), updateUser);
+                return ResponseEntity.ok().body("개인 정보가 수정되었습니다.");
+            } catch (IllegalArgumentException e) {
+                ErrorDto errorDto = new ErrorDto(e.getMessage());
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorDto.getMessage());
+            }
+        } else {
+            return ResponseEntity.ok().body("로그인 후 진행해주세요.");
+        }
+
+    }
+
 }
