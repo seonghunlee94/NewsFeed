@@ -8,6 +8,7 @@ import org.example.prepurchase.domain.user.application.UserService;
 import org.example.prepurchase.domain.user.domain.Users;
 import org.example.prepurchase.domain.user.dto.LoginRequestDto;
 import org.example.prepurchase.domain.user.dto.SignupRequestDto;
+import org.example.prepurchase.domain.user.dto.UpdateImformationRequestDto;
 import org.example.prepurchase.domain.user.exception.DuplicateException;
 import org.example.prepurchase.global.error.ErrorDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,46 @@ public class UserController {
     public ResponseEntity<String> logout(HttpServletRequest request) {
         redisService.delValues(request.getHeader("username"));
         return ResponseEntity.ok().body("로그아웃 성공!");
+    }
+
+    @PatchMapping("/information")
+    public ResponseEntity<String> patchInformation(HttpServletRequest request, @RequestBody UpdateImformationRequestDto updateUser) {
+
+        String username = request.getHeader("username");
+
+        // 로그인된 상태인지 확인 -> 토큰 유효성 검사로 추후 변경.
+        if (username != null) {
+            try {
+                userService.patchInformation(username, updateUser);
+                return ResponseEntity.ok().body("개인 정보가 수정되었습니다.");
+            } catch (IllegalArgumentException e) {
+                ErrorDto errorDto = new ErrorDto(e.getMessage());
+                return ResponseEntity.ok().body(errorDto.getMessage());
+            }
+        } else {
+            return ResponseEntity.ok().body("로그인 후 진행해주세요.");
+        }
+
+    }
+
+    @PatchMapping("/password")
+    public ResponseEntity<String> patchPassword(HttpServletRequest request, @RequestBody UpdateImformationRequestDto updateUser) {
+
+        String username = request.getHeader("username");
+
+
+        // 로그인된 상태인지 확인 -> 토큰 유효성 검사로 추후 변경.
+        if (username != null) {
+            try {
+                userService.patchPassword(username, updateUser);
+                return ResponseEntity.ok().body("비밀번호가 수정되었습니다.");
+            } catch (IllegalArgumentException e) {
+                ErrorDto errorDto = new ErrorDto(e.getMessage());
+                return ResponseEntity.ok().body(errorDto.getMessage());
+            }
+        } else {
+            return ResponseEntity.ok().body("로그인 후 진행해주세요.");
+        }
     }
 
 }
