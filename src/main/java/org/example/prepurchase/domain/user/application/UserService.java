@@ -6,9 +6,11 @@ import org.example.prepurchase.domain.user.domain.Users;
 import org.example.prepurchase.domain.user.dao.UserRepository;
 import org.example.prepurchase.domain.user.dto.LoginRequestDto;
 import org.example.prepurchase.domain.user.dto.SignupRequestDto;
+import org.example.prepurchase.domain.user.dto.UpdateImformationRequestDto;
 import org.example.prepurchase.domain.user.exception.DuplicateException;
 import org.example.prepurchase.global.auth.UserRoleEnum;
 import org.example.prepurchase.global.util.JwtUtil;
+import org.hibernate.sql.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -88,7 +90,7 @@ public class UserService {
         redisService.setValues(refreshToken, username);
     }
 
-    public void patchInformation(String username, SignupRequestDto updateUser) {
+    public void patchInformation(String username, UpdateImformationRequestDto updateUser) {
         Users user = userRepository.findByUsername(username);
 
         if (user == null) {
@@ -111,6 +113,31 @@ public class UserService {
         if (!flag) {
             throw new IllegalArgumentException("변경된 정보가 없습니다.");
         }
+        userRepository.save(user);
+
+    }
+
+    public void patchPassword(String username, UpdateImformationRequestDto updateUser) {
+
+        Users user = userRepository.findByUsername(username);
+        String password = updateUser.getPassword();
+        String updatePassowrd = updateUser.getUpdatePassword();
+
+
+        if (user == null) {
+            throw new IllegalArgumentException("없는 사용자입니다.");
+        }
+
+        // 비밀번호 확인
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+
+        // 패스워드 암호화
+        String encodedPassword = passwordEncoder.encode(updatePassowrd);
+
+        user.setPassword(encodedPassword);
+
         userRepository.save(user);
 
     }

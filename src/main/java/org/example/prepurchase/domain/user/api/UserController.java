@@ -8,6 +8,7 @@ import org.example.prepurchase.domain.user.application.UserService;
 import org.example.prepurchase.domain.user.domain.Users;
 import org.example.prepurchase.domain.user.dto.LoginRequestDto;
 import org.example.prepurchase.domain.user.dto.SignupRequestDto;
+import org.example.prepurchase.domain.user.dto.UpdateImformationRequestDto;
 import org.example.prepurchase.domain.user.exception.DuplicateException;
 import org.example.prepurchase.global.error.ErrorDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,21 +60,43 @@ public class UserController {
     }
 
     @PatchMapping("/information")
-    public ResponseEntity<String> patchInformation(HttpServletRequest request, @RequestBody SignupRequestDto updateUser) {
-        // username은 변경 불가. -> header로 받아오기. RequestBody에는 greeting과 image 넣어서 보내기.
+    public ResponseEntity<String> patchInformation(HttpServletRequest request, @RequestBody UpdateImformationRequestDto updateUser) {
+
         String username = request.getHeader("username");
+
+        // 로그인된 상태인지 확인 -> 토큰 유효성 검사로 추후 변경.
         if (username != null) {
             try {
-                userService.patchInformation(request.getHeader("username"), updateUser);
+                userService.patchInformation(username, updateUser);
                 return ResponseEntity.ok().body("개인 정보가 수정되었습니다.");
             } catch (IllegalArgumentException e) {
                 ErrorDto errorDto = new ErrorDto(e.getMessage());
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorDto.getMessage());
+                return ResponseEntity.ok().body(errorDto.getMessage());
             }
         } else {
             return ResponseEntity.ok().body("로그인 후 진행해주세요.");
         }
 
+    }
+
+    @PatchMapping("/password")
+    public ResponseEntity<String> patchPassword(HttpServletRequest request, @RequestBody UpdateImformationRequestDto updateUser) {
+
+        String username = request.getHeader("username");
+
+
+        // 로그인된 상태인지 확인 -> 토큰 유효성 검사로 추후 변경.
+        if (username != null) {
+            try {
+                userService.patchPassword(username, updateUser);
+                return ResponseEntity.ok().body("비밀번호가 수정되었습니다.");
+            } catch (IllegalArgumentException e) {
+                ErrorDto errorDto = new ErrorDto(e.getMessage());
+                return ResponseEntity.ok().body(errorDto.getMessage());
+            }
+        } else {
+            return ResponseEntity.ok().body("로그인 후 진행해주세요.");
+        }
     }
 
 }
