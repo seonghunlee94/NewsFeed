@@ -1,6 +1,5 @@
 package org.example.prepurchase.domain.post.application;
 
-import jakarta.servlet.http.HttpServletRequest;
 import org.example.prepurchase.domain.post.dao.PostLoveRepository;
 import org.example.prepurchase.domain.post.dao.PostRepository;
 import org.example.prepurchase.domain.post.domain.PostLove;
@@ -40,16 +39,10 @@ public class PostService {
     }
 
 
-    public void lovePost(HttpServletRequest request) {
+    public void lovePost(String idString, String title, String userId, String username) {
 
-        // 화면에 보이는 포스트 id와 title
-        String idString = request.getHeader("id");
         Long id = Long.valueOf(idString);
-        //String title = request.getHeader("title");
-        //String userId = request.getHeader("userID");
 
-        // 로그인된 사용자의 username
-        String username = request.getHeader("username");
 
         Optional<Posts> postOptional = postRepository.findById(id);
         if (postOptional.isEmpty()) {
@@ -71,8 +64,6 @@ public class PostService {
         postLove.setCreateTime(LocalDateTime.now(ZoneId.of("Asia/Seoul")));
 
         postLoveRepository.save(postLove);
-
-        // 포스트를 만든 사용자와 좋아요 한 사용자가 동일하지 않은 경우. 뉴스피드 호출해서 알람 보내기.
 
 
     }
