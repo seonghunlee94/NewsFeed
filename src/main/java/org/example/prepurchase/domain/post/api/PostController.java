@@ -4,6 +4,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.example.prepurchase.domain.post.application.PostService;
 import org.example.prepurchase.domain.post.dto.CreatePostDto;
+import org.example.prepurchase.domain.post.dto.LovePostDto;
+import org.example.prepurchase.global.error.ErrorDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,4 +29,15 @@ public class PostController {
     }
 
 
+    @PostMapping("/love")
+    public ResponseEntity<String> lovePost(HttpServletRequest request) {
+
+        try {
+            postService.lovePost(request);
+            return ResponseEntity.ok().body("게시물을 좋아합니다.");
+        } catch(IllegalArgumentException e) {
+            ErrorDto errorDto = new ErrorDto(e.getMessage());
+            return ResponseEntity.ok().body(errorDto.getMessage());
+        }
+    }
 }
