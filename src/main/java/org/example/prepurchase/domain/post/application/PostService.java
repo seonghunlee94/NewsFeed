@@ -53,7 +53,7 @@ public class PostService {
 
         Optional<PostLove> checkLove = postLoveRepository.findPostLoveByPostAndUserId(post.getId(), username);
         if (!checkLove.isEmpty()) {
-            throw new IllegalArgumentException("이미 좋아요 한 게시물입니다.");
+            throw new IllegalArgumentException("이미 '좋아요' 한 게시물입니다.");
         }
 
 

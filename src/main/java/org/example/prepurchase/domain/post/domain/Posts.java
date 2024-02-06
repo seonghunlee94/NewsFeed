@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.example.prepurchase.domain.comment.domain.Comments;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -31,7 +32,10 @@ public class Posts {
     private LocalDateTime updateTime;
 
     @OneToMany(mappedBy = "post")
-    private List<PostLove> otherEntities;
+    private List<PostLove> postEntities;
+
+    @OneToMany(mappedBy = "post")
+    private List<Comments> commentEntities;
 
 
     public Posts() {
