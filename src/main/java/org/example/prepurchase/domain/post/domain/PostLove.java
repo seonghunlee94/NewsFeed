@@ -30,9 +30,9 @@ public class PostLove {
     }
 
     // Parameterized constructor
-    public PostLove(Long id, Posts postId, LocalDateTime createTime) {
+    public PostLove(Long id, Posts post, LocalDateTime createTime) {
         this.id = id;
-        this.post = postId;
+        this.post = post;
         this.createTime = createTime;
     }
 
@@ -44,11 +44,11 @@ public class PostLove {
         this.id = id;
     }
 
-    public Posts getPostId() {
+    public Posts getPost() {
         return post;
     }
 
-    public void setPostId(Posts post) {
+    public void setPost(Posts post) {
         this.post = post;
     }
 
