@@ -6,7 +6,6 @@ import org.example.prepurchase.domain.comment.domain.CommentLove;
 import org.example.prepurchase.domain.comment.domain.Comments;
 import org.example.prepurchase.domain.comment.dto.CreateCommentRequestDto;
 import org.example.prepurchase.domain.post.dao.PostRepository;
-import org.example.prepurchase.domain.post.domain.PostLove;
 import org.example.prepurchase.domain.post.domain.Posts;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

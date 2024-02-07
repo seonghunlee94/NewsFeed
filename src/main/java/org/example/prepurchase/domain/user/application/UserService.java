@@ -1,6 +1,5 @@
 package org.example.prepurchase.domain.user.application;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.prepurchase.domain.user.domain.Users;
 import org.example.prepurchase.domain.user.dao.UserRepository;
@@ -10,15 +9,14 @@ import org.example.prepurchase.domain.user.dto.UpdateImformationRequestDto;
 import org.example.prepurchase.domain.user.exception.DuplicateException;
 import org.example.prepurchase.global.auth.UserRoleEnum;
 import org.example.prepurchase.global.util.JwtUtil;
-import org.hibernate.sql.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Objects;
 
 @Service
+@Transactional
 public class UserService {
 
     private final UserRepository userRepository;
@@ -36,7 +34,6 @@ public class UserService {
     }
 
 
-    @Transactional
     public Users signUpUser(SignupRequestDto newUserDto) {
         // 이메일 중복 체크
         Users existingEmail = userRepository.findByEmail(newUserDto.getEmail());
