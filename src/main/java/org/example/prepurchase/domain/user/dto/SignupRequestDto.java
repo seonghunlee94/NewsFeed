@@ -30,6 +30,7 @@ public class SignupRequestDto {
     @NotBlank(message = "프로필 이미지는 필수 입력 값입니다.")
     private String profileImage;
 
+    @Builder.Default
     private String adminToken = "";
 
     public String getPassword() {

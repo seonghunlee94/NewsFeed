@@ -1,10 +1,12 @@
 package org.example.prepurchase.domain.post.application;
 
+import org.example.prepurchase.domain.newsfeed.application.NewsFeedService;
 import org.example.prepurchase.domain.post.dao.PostLoveRepository;
 import org.example.prepurchase.domain.post.dao.PostRepository;
 import org.example.prepurchase.domain.post.domain.PostLove;
 import org.example.prepurchase.domain.post.domain.Posts;
 import org.example.prepurchase.domain.post.dto.CreatePostDto;
+import org.example.prepurchase.global.config.NewsFeedType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,10 +21,14 @@ public class PostService {
     private final PostRepository postRepository;
     private final PostLoveRepository postLoveRepository;
 
+    // 추후에 모듈화 작업 후 NewsFeedService 삭제
+    private final NewsFeedService newsFeedService;
 
-    public PostService(PostRepository postRepository, PostLoveRepository postLoveRepository) {
+
+    public PostService(PostRepository postRepository, PostLoveRepository postLoveRepository, NewsFeedService newsFeedService) {
         this.postRepository = postRepository;
         this.postLoveRepository = postLoveRepository;
+        this.newsFeedService = newsFeedService;
     }
 
     public void createPost(String username, CreatePostDto createPost) {
@@ -65,6 +71,10 @@ public class PostService {
 
         postLoveRepository.save(postLove);
 
+        // 추후에 모듈화 작업할 때, 호출 방식 바꾸기.
+        if (!userId.equals(username)) {
+            newsFeedService.createNewsFeed(title, userId, username, NewsFeedType.POST_LOVE);
+        }
 
     }
 
