@@ -53,7 +53,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/logout")
+    @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpServletRequest request) {
         redisService.delValues(request.getHeader("username"));
         return ResponseEntity.ok().body("로그아웃 성공!");
