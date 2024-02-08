@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.example.prepurchase.global.config.NewsFeedType;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
@@ -26,7 +27,8 @@ public class NewsFeeds {
     private String receiverId;
 
     @NotNull
-    private String serviceType;
+    @Enumerated(EnumType.STRING)
+    private NewsFeedType serviceType;
 
     private String postName;
 

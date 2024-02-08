@@ -6,11 +6,11 @@ import org.example.prepurchase.domain.comment.dao.CommentRepository;
 import org.example.prepurchase.domain.comment.domain.CommentLove;
 import org.example.prepurchase.domain.comment.domain.Comments;
 import org.example.prepurchase.domain.comment.dto.CreateCommentRequestDto;
-import org.example.prepurchase.domain.newsfeed.application.NewsFeedService;
 import org.example.prepurchase.domain.post.dao.PostRepository;
 import org.example.prepurchase.domain.post.domain.Posts;
+import org.example.prepurchase.global.client.NewsFeedClient;
+import org.example.prepurchase.global.client.NewsFeedForm;
 import org.example.prepurchase.global.config.NewsFeedType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,14 +27,14 @@ public class CommentService {
     private final CommentLoveRepository commentLoveRepository;
 
     // 모듈 작업 후 삭제
-    private final NewsFeedService newsFeedService;
+    private final NewsFeedClient newsFeedClient;
 
 
-    public CommentService(CommentRepository commentRepository, PostRepository postRepository, CommentLoveRepository commentLoveRepository, NewsFeedService newsFeedService) {
+    public CommentService(CommentRepository commentRepository, PostRepository postRepository, CommentLoveRepository commentLoveRepository, NewsFeedClient newsFeedClient) {
         this.commentRepository = commentRepository;
         this.postRepository = postRepository;
         this.commentLoveRepository = commentLoveRepository;
-        this.newsFeedService = newsFeedService;
+        this.newsFeedClient = newsFeedClient;
     }
 
     public void createComment(HttpServletRequest request, CreateCommentRequestDto createComment) {
@@ -66,7 +66,13 @@ public class CommentService {
 
         // 추후에 모듈화 작업할 때, 호출 방식 바꾸기.
         if (!userId.equals(username)) {
-            newsFeedService.createNewsFeed(title, userId, username, NewsFeedType.COMMENT);
+            NewsFeedForm newsFeedForm = new NewsFeedForm();
+
+            newsFeedClient.saveNewsFeed(newsFeedForm.builder()
+                    .senderId(username)
+                    .receiverId(userId)
+                    .serviceType(NewsFeedType.COMMENT)
+                    .postName(title).build());
         }
 
 

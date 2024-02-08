@@ -4,6 +4,7 @@ import org.example.prepurchase.domain.follow.dao.FollowRepository;
 import org.example.prepurchase.domain.follow.domain.Follows;
 import org.example.prepurchase.domain.follow.dto.FollowDto;
 import org.example.prepurchase.domain.newsfeed.application.NewsFeedService;
+import org.example.prepurchase.domain.newsfeed.domain.NewsFeeds;
 import org.example.prepurchase.global.config.NewsFeedType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,7 +53,13 @@ public class FollowService {
 
         followRepository.save(newFollow);
 
-        newsFeedService.createNewsFeed("", toUser, username, NewsFeedType.FOLLOW);
+        NewsFeeds newsFeed = new NewsFeeds();
+
+        newsFeed.setSenderId(username);
+        newsFeed.setServiceType(NewsFeedType.FOLLOW);
+        newsFeed.setReceiverId(toUser);
+
+        newsFeedService.createNewsFeed(newsFeed);
 
     }
 

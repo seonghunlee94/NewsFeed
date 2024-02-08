@@ -5,6 +5,7 @@ import org.example.prepurchase.domain.newsfeed.domain.NewsFeeds;
 import org.example.prepurchase.global.config.NewsFeedType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -21,14 +22,8 @@ public class NewsFeedService {
         this.newsFeedRepository = newsFeedRepository;
     }
 
-    public void createNewsFeed(String title, String userId, String username, NewsFeedType newsFeedType) {
+    public void createNewsFeed(NewsFeeds newsFeed) {
 
-        NewsFeeds newsFeed = new NewsFeeds();
-
-        newsFeed.setSenderId(username);
-        newsFeed.setReceiverId(userId);
-        newsFeed.setServiceType(String.valueOf(newsFeedType));
-        newsFeed.setPostName(title);
         newsFeed.setCreateTime(LocalDateTime.now(ZoneId.of("Asia/Seoul")));
 
         newsFeedRepository.save(newsFeed);
