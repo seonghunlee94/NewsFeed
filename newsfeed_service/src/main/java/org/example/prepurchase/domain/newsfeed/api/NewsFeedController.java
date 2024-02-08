@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/newsfeed")
+@RequestMapping("/api/vi/newsfeed")
 public class NewsFeedController {
 
     private final NewsFeedService newsFeedService;
