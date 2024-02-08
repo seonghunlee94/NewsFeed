@@ -35,3 +35,10 @@ out/
 
 ### VS Code ###
 .vscode/
+/src/main/generated/
+/activity_service/src/main/generated/
+/newsfeed_service/src/main/generated/
+/user_service/src/main/generated/
+/user_service/src/main/resources/application-local.yml
+/newsfeed_service/src/main/resources/application-local.yml
+/activity_service/src/main/resources/application-local.yml
