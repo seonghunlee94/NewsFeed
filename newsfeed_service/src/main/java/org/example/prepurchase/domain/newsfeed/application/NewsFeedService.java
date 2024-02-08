@@ -2,10 +2,8 @@ package org.example.prepurchase.domain.newsfeed.application;
 
 import org.example.prepurchase.domain.newsfeed.dao.NewsFeedRepository;
 import org.example.prepurchase.domain.newsfeed.domain.NewsFeeds;
-import org.example.prepurchase.global.config.NewsFeedType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;

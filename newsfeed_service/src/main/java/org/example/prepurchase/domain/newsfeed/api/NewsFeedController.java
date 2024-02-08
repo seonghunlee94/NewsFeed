@@ -3,7 +3,6 @@ package org.example.prepurchase.domain.newsfeed.api;
 import org.example.prepurchase.domain.newsfeed.application.NewsFeedService;
 import org.example.prepurchase.domain.newsfeed.domain.NewsFeeds;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,11 +31,5 @@ public class NewsFeedController {
 
     }
 
-    @PostMapping("/feign/save")
-    public ResponseEntity<Void> saveNewsFeed(@RequestBody NewsFeeds newsFeed) {
-        newsFeedService.createNewsFeed(newsFeed);
-
-        return ResponseEntity.ok().build();
-    }
 
 }
