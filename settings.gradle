@@ -1,1 +1,6 @@
 rootProject.name = 'Pre-purchase'
+include 'activity_service'
+//findProject(':activity_service:user_service')?.name = 'user_service'
+include 'user_service'
+include 'newsfeed_service'
+
