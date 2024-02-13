@@ -2,4 +2,4 @@
 
 
 ### docker-compose
-- docker-compose up - d : 도커 실행
+- docker-compose up : 도커 실행
