@@ -15,7 +15,7 @@ public class RedisService {
     // 키-벨류 설정
     public void setValues(String token, String username){
         ValueOperations<String, String> values = redisTemplate.opsForValue();
-        values.set(username, token, Duration.ofMinutes(60));
+        values.set(username, token);
     }
 
     // 키값으로 벨류 가져오기
