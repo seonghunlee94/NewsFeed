@@ -2,6 +2,9 @@ server:
   port: 8082
 
 spring:
+  application:
+    name: activity-service
+
   profiles:
     active: local
 
@@ -22,3 +25,11 @@ spring:
   messages:
     basename: messages
 
+eureka:
+  client:
+    registryFetchIntervalSeconds: 5
+    disable-delta: true
+    register-with-eureka: true
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
