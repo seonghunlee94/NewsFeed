@@ -44,3 +44,5 @@ out/
 /activity_service/src/main/resources/application-local.yml
 /api_gateway/src/main/resources/application.yml
 /service_discovery/src/main/resources/application.yml
+/api_gateway/src/main/java/org/example/apigateway/redis/
+/src/
